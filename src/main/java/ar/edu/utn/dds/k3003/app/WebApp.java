@@ -16,18 +16,20 @@ import java.util.TimeZone;
 public class WebApp {
 	public static void main(String[] args) {
 		
-		var fachada = new Fachada();
-	    var objectMapper = createObjectMapper();
-	    Integer port = Integer.parseInt(System.getProperty("port","8080"));
-	    Javalin app = Javalin.create().start(port);
-	    var viandaController = new ViandaController(fachada);
-	    fachada.setHeladerasProxy(new HeladerasProxy(objectMapper));
+        var env = System.getenv();
+		var port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
+		var app = Javalin.create().start(port);
+		ObjectMapper objectMapper = createObjectMapper();
+		Fachada fachada = new Fachada();
+		var viandaController = new ViandaController(fachada);
+		fachada.setHeladerasProxy(new HeladerasProxy(objectMapper));
 		
-		app.post("/viandas", viandaController::agregar);
-		app.get("/viandas/search/findByColaboradorIdAndAnioAndMes", viandaController::obtenerXColIDAndAnioAndMes);
-		app.get("/viandas/{qr}", viandaController::obtenerXQR);
-		app.get("/viandas/{qr}/vencida", viandaController::evaluarVencimiento);
-		app.patch("/viandas/{qrVianda}", viandaController::modificarHeladeraXQR);
+		app.get("/", ctx -> ctx.result("Vianda"));
+		app.post("/viandas", ctx -> viandaController.agregar(ctx));
+		app.get("/viandas/search/findByColaboradorIdAndAnioAndMes", ctx -> viandaController.obtenerXColIDAndAnioAndMes(ctx));
+		app.get("/viandas/{qr}", ctx -> viandaController.obtenerXQR(ctx));
+		app.get("/viandas/{qr}/vencida", ctx -> viandaController.evaluarVencimiento(ctx));
+		app.patch("/viandas/{qrVianda}", ctx -> viandaController.modificarHeladeraXQR(ctx));
 	
 	}
 
