@@ -9,25 +9,14 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.javalin.Javalin;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.TimeZone;
 
 public class WebApp {
-	String URL_VIANDAS;
-    String URL_LOGISTICA;
-    String URL_HELADERAS;
-    String URL_COLABORADORES;
-    public static EntityManagerFactory entityManagerFactory;
 	public static void main(String[] args) {
 		
-		startEntityManagerFactory();
         var env = System.getenv();
-        
 		var port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
 		var app = Javalin.create().start(port);
 		ObjectMapper objectMapper = createObjectMapper();
@@ -54,7 +43,7 @@ public class WebApp {
 	    objectMapper.setDateFormat(sdf);
 	    return objectMapper;
 	}
-	public static void startEntityManagerFactory() {
+	/*public static void startEntityManagerFactory() {
         Map<String, String> env = System.getenv();
         Map<String, Object> configOverrides = new HashMap<String, Object>();
         String[] keys = new String[] { "javax.persistence.jdbc.url", "javax.persistence.jdbc.user",
@@ -66,6 +55,6 @@ public class WebApp {
                 configOverrides.put(key, value);
             }
         }
-        entityManagerFactory = Persistence.createEntityManagerFactory("postgres", configOverrides);
-    }
+        entityManagerFactory = Persistence.createEntityManagerFactory("viandas", configOverrides);
+    }*/
 }

@@ -28,7 +28,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaViandas {
     //private FachadaColaboradores fachadaColaborador;
    
     public Fachada() {
-    	this.entityManagerFactory = Persistence.createEntityManagerFactory("postgres");
+    	this.entityManagerFactory = Persistence.createEntityManagerFactory("viandas");
         this.entityManager = entityManagerFactory.createEntityManager();
         this.viandaRepository = new ViandaRepository(entityManager);
         this.viandaMapper = new ViandaMapper();

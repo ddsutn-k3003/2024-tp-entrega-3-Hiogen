@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -14,7 +16,8 @@ import java.util.Objects;
 @Setter
 @Getter
 public class ViandaRepository {
-    private final EntityManager entityManager;
+	static EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("viandas");
+	EntityManager entityManager = entityManagerFactory.createEntityManager();
 
     public ViandaRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -75,14 +78,4 @@ public class ViandaRepository {
         }
     }
 
-    public void borrarTodo() {
-        entityManager.getTransaction().begin();
-        try {
-            int deletedCount = entityManager.createQuery("DELETE FROM Vianda").executeUpdate();
-            entityManager.getTransaction().commit();
-        } catch (Exception e) {
-            entityManager.getTransaction().rollback();
-            throw e;
-        }
-    }
 }
