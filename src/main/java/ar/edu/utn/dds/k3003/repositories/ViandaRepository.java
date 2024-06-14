@@ -8,10 +8,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 
 @Setter
 @Getter
@@ -35,15 +37,16 @@ public class ViandaRepository {
     }
 
     public Vianda buscarPorQr(String qr) {
-        TypedQuery<Vianda> query = entityManager.createQuery("SELECT v FROM Vianda v WHERE v.codigoQR = :qr", Vianda.class);
-        query.setParameter("qr", qr);
-        List<Vianda> results = query.getResultList();
-        return results.isEmpty() ? null : results.get(0);
+    	Collection<Vianda> viandas = entityManager.createQuery("from Vianda",Vianda.class).getResultList();
+        Optional<Vianda> first = viandas.stream().filter(v -> v.getQr().equals(qr)).findFirst();
+        return first.orElseThrow(() -> new NoSuchElementException(
+            String.format("No hay una vianda de qr: %s", qr)
+        ));
     }
 
     public List<Vianda> getViandas() {
-        TypedQuery<Vianda> query = entityManager.createQuery("SELECT v FROM Vianda v", Vianda.class);
-        return query.getResultList();
+    	List<Vianda> viandas = entityManager.createQuery("from Vianda", Vianda.class).getResultList();
+        return viandas;
     }
 
     public Vianda findById(Long id) {
