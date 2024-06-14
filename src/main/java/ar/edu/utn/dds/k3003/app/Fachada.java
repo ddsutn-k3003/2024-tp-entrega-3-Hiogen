@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.TypedQuery;
+
+import java.time.LocalDateTime;
 import java.util.*;
 
 import ar.edu.utn.dds.k3003.facades.FachadaHeladeras;
@@ -35,56 +36,46 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaViandas {
     
     @Override
     public ViandaDTO agregar(ViandaDTO viandaDTO) {
-        viandaRepository.getEntityManager().getTransaction().begin();
     	Vianda vianda = new Vianda(viandaDTO.getCodigoQR(), viandaDTO.getFechaElaboracion(), EstadoViandaEnum.PREPARADA, viandaDTO.getColaboradorId(), viandaDTO.getHeladeraId());
     	vianda = this.viandaRepository.save(vianda);
-    	viandaRepository.getEntityManager().getTransaction().commit();
-        viandaRepository.getEntityManager().close();
     	return viandaMapper.map(vianda);
     }
     
     @Override
     public ViandaDTO modificarEstado(String qr, EstadoViandaEnum estado) {
-        viandaRepository.getEntityManager().getTransaction().begin();
         Vianda vianda = viandaRepository.buscarPorQr(qr);
         if (vianda != null) {
             vianda.setEstado(estado);
             viandaRepository.save(vianda);
-            entityManager.getTransaction().commit();
-            entityManager.close();
             return viandaMapper.map(vianda);
         } else {
-            entityManager.getTransaction().rollback();
-            entityManager.close();
             throw new IllegalArgumentException("No se encontró la vianda");
         }
     }
     
 	@Override
     public List<ViandaDTO> viandasDeColaborador(Long colaboradorId, Integer mes, Integer anio) {
-        TypedQuery<Vianda> query = entityManager.createQuery(
-                "SELECT v FROM Vianda v WHERE v.colaboradorId = :colaboradorId AND FUNCTION('MONTH', v.fechaElaboracion) = :mes AND FUNCTION('YEAR', v.fechaElaboracion) = :anio",
-                Vianda.class
-        );
-        query.setParameter("colaboradorId", colaboradorId);
-        query.setParameter("mes", mes);
-        query.setParameter("anio", anio);
-        List<Vianda> viandas = query.getResultList();
-        entityManager.close();
-        if (viandas.isEmpty()) {
+		List<ViandaDTO> viandasDeColaborador = new ArrayList<>();
+
+        for (Vianda vianda : this.viandaRepository.getViandas()) {
+            LocalDateTime fechaVianda = vianda.getFechaElaboracion();
+            if (vianda.getColaboradorId().equals(colaboradorId) &&
+                    fechaVianda.getMonthValue() == mes &&
+                    fechaVianda.getYear() == anio) {
+                viandasDeColaborador.add(viandaMapper.map(vianda));
+            }
+        }
+
+        if (viandasDeColaborador.isEmpty()) {
             throw new NoSuchElementException("No se encontraron viandas");
         }
-        List<ViandaDTO> viandasDeColaborador = new ArrayList<>();
-        for (Vianda vianda : viandas) {
-            viandasDeColaborador.add(viandaMapper.map(vianda));
-        }
+
         return viandasDeColaborador;
     }
     
     @Override
     public ViandaDTO buscarXQR(String qr) {
     	Vianda vianda = viandaRepository.buscarPorQr(qr);
-    	entityManager.close();
     	if (vianda != null) {
             return viandaMapper.map(vianda);
         } else {
@@ -110,17 +101,11 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaViandas {
 
 	@Override
 	public ViandaDTO modificarHeladera(String qrVianda, int heladeraDestino) {
-        entityManager.getTransaction().begin();
 		Vianda vianda = viandaRepository.buscarPorQr(qrVianda);
 		if (vianda == null) {
-            entityManager.getTransaction().rollback();
-            entityManager.close();
             throw new NoSuchElementException("No se encontró la vianda");
         }
         vianda.setHeladeraId(heladeraDestino);
-        viandaRepository.save(vianda);
-        entityManager.getTransaction().commit();
-        entityManager.close();
         return viandaMapper.map(vianda);
 	}
 }

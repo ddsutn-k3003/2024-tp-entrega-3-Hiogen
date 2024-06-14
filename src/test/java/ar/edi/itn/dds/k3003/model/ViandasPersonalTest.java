@@ -2,7 +2,6 @@ package ar.edi.itn.dds.k3003.model;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import static ar.edu.utn.dds.k3003.app.WebApp.startEntityManagerFactory;
 
 import ar.edu.utn.dds.k3003.facades.FachadaHeladeras;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
