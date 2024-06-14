@@ -10,19 +10,15 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class ViandaRepository {
-    public void setEntityManager(EntityManager entityManager) {
-    this.entityManager = entityManager;
-}
+	private final EntityManager entityManager;
     public EntityManager getEntityManager() {
         return entityManager;
     }
-    private EntityManager entityManager;
-
     public ViandaRepository(EntityManagerFactory entityManagerFactory) {
         this.entityManager = entityManagerFactory.createEntityManager();
     }
-
-    public ViandaRepository() {
+    public ViandaRepository(EntityManager entityManager) {
+    	this.entityManager = entityManager;
 	}
 public Vianda save(Vianda vianda) {
     EntityTransaction transaction = entityManager.getTransaction();

@@ -15,30 +15,26 @@ import ar.edu.utn.dds.k3003.facades.dtos.ViandaDTO;
 import ar.edu.utn.dds.k3003.model.Vianda;
 import ar.edu.utn.dds.k3003.repositories.ViandaMapper;
 import ar.edu.utn.dds.k3003.repositories.ViandaRepository;
+import javax.persistence.Persistence;
 
 public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaViandas {
 	
-	private EntityManagerFactory entityManagerFactory;
+    private EntityManagerFactory entityManagerFactory;
+    private EntityManager entityManager;
     private final ViandaRepository viandaRepository;
     private final ViandaMapper viandaMapper;
     private FachadaHeladeras fachadaHeladeras;
     //private FachadaColaboradores fachadaColaborador;
    
     public Fachada() {
-        this.viandaRepository = new ViandaRepository();
-        this.viandaMapper = new ViandaMapper();
-    }
-    
-    public Fachada(EntityManagerFactory entityManagerFactory){
-        this.entityManagerFactory = entityManagerFactory;
-        this.viandaRepository = new ViandaRepository();
+    	this.entityManagerFactory = Persistence.createEntityManagerFactory("postgres");
+        this.entityManager = entityManagerFactory.createEntityManager();
+        this.viandaRepository = new ViandaRepository(entityManager);
         this.viandaMapper = new ViandaMapper();
     }
     
     @Override
     public ViandaDTO agregar(ViandaDTO viandaDTO) {
-    	EntityManager entityManager = entityManagerFactory.createEntityManager();
-        viandaRepository.setEntityManager(entityManager);
         viandaRepository.getEntityManager().getTransaction().begin();
     	Vianda vianda = new Vianda(viandaDTO.getCodigoQR(), viandaDTO.getFechaElaboracion(), EstadoViandaEnum.PREPARADA, viandaDTO.getColaboradorId(), viandaDTO.getHeladeraId());
     	vianda = this.viandaRepository.save(vianda);
@@ -49,8 +45,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaViandas {
     
     @Override
     public ViandaDTO modificarEstado(String qr, EstadoViandaEnum estado) {
-    	EntityManager entityManager = entityManagerFactory.createEntityManager();
-        viandaRepository.setEntityManager(entityManager);
         viandaRepository.getEntityManager().getTransaction().begin();
         Vianda vianda = viandaRepository.buscarPorQr(qr);
         if (vianda != null) {
@@ -68,8 +62,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaViandas {
     
 	@Override
     public List<ViandaDTO> viandasDeColaborador(Long colaboradorId, Integer mes, Integer anio) {
-    	EntityManager entityManager = entityManagerFactory.createEntityManager();
-        viandaRepository.setEntityManager(entityManager);
         TypedQuery<Vianda> query = entityManager.createQuery(
                 "SELECT v FROM Vianda v WHERE v.colaboradorId = :colaboradorId AND FUNCTION('MONTH', v.fechaElaboracion) = :mes AND FUNCTION('YEAR', v.fechaElaboracion) = :anio",
                 Vianda.class
@@ -91,8 +83,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaViandas {
     
     @Override
     public ViandaDTO buscarXQR(String qr) {
-    	EntityManager entityManager = entityManagerFactory.createEntityManager();
-        viandaRepository.setEntityManager(entityManager);
     	Vianda vianda = viandaRepository.buscarPorQr(qr);
     	entityManager.close();
     	if (vianda != null) {
@@ -120,8 +110,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaViandas {
 
 	@Override
 	public ViandaDTO modificarHeladera(String qrVianda, int heladeraDestino) {
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-        viandaRepository.setEntityManager(entityManager);
         entityManager.getTransaction().begin();
 		Vianda vianda = viandaRepository.buscarPorQr(qrVianda);
 		if (vianda == null) {

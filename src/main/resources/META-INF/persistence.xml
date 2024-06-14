@@ -10,21 +10,13 @@
         <class>ar.edu.utn.dds.k3003.model.Vianda</class>
 
         <properties>
-            <property name="javax.persistence.jdbc.user" value="postgres"/>
-            <property name="javax.persistence.jdbc.password" value="hiogen2003" />
-            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/viandas"/>
-
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
             <property name="hibernate.default_schema" value="public"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.connection.pool_size" value="10" />
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
             <property name="use_sql_comments" value="true" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/> <!-- DB Dialect -->
-
-
         </properties>
 
     </persistence-unit>

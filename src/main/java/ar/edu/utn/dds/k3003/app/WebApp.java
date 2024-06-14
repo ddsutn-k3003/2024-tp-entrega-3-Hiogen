@@ -31,7 +31,7 @@ public class WebApp {
 		var port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
 		var app = Javalin.create().start(port);
 		ObjectMapper objectMapper = createObjectMapper();
-		Fachada fachada = new Fachada(entityManagerFactory);
+		Fachada fachada = new Fachada();
 		var viandaController = new ViandaController(fachada);
 		fachada.setHeladerasProxy(new HeladerasProxy(objectMapper));
 		
@@ -66,6 +66,6 @@ public class WebApp {
                 configOverrides.put(key, value);
             }
         }
-        entityManagerFactory = Persistence.createEntityManagerFactory("db", configOverrides);
+        entityManagerFactory = Persistence.createEntityManagerFactory("postgres", configOverrides);
     }
 }
