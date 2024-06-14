@@ -66,6 +66,6 @@ public class WebApp {
                 configOverrides.put(key, value);
             }
         }
-        entityManagerFactory = Persistence.createEntityManagerFactory("viandas_189n", configOverrides);
+        entityManagerFactory = Persistence.createEntityManagerFactory("viandas", configOverrides);
     }
 }
