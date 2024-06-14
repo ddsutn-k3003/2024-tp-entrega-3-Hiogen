@@ -13,7 +13,7 @@
             <property name="javax.persistence.jdbc.user" value="viandas_189n_user"/>
             <property name="javax.persistence.jdbc.password" value="GQRGvr5FyUb9WXk2THJ9TiSInWOmUlHK" />
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgres://dpg-cplra2ij1k6c739pkip0-a.oregon-postgres.render.com/viandas_189n"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://dpg-cplra2ij1k6c739pkip0-a.oregon-postgres.render.com/viandas_189n"/>
 
             <property name="hibernate.flushMode" value="FLUSH_AUTO" />
             <property name="hibernate.hbm2ddl.auto" value="create" />
