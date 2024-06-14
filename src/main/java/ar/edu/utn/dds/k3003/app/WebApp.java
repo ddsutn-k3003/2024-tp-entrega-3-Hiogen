@@ -39,11 +39,12 @@ public class WebApp {
 		var viandaController = new ViandaController(fachada);
 		fachada.setHeladerasProxy(new HeladerasProxy(objectMapper));
 		
-		app.post("/viandas", viandaController::agregar);
-		app.get("/viandas/search/findByColaboradorIdAndAnioAndMes", viandaController::obtenerXColIDAndAnioAndMes);
-		app.get("/viandas/{qr}", viandaController::obtenerXQR);
-		app.get("/viandas/{qr}/vencida", viandaController::evaluarVencimiento);
-		app.patch("/viandas/{qrVianda}", viandaController::modificarHeladeraXQR);
+		app.get("/", ctx -> ctx.result("Vianda"));
+		app.post("/viandas", ctx -> viandaController.agregar(ctx));
+		app.get("/viandas/search/findByColaboradorIdAndAnioAndMes", ctx -> viandaController.obtenerXColIDAndAnioAndMes(ctx));
+		app.get("/viandas/{qr}", ctx -> viandaController.obtenerXQR(ctx));
+		app.get("/viandas/{qr}/vencida", ctx -> viandaController.evaluarVencimiento(ctx));
+		app.patch("/viandas/{qrVianda}", ctx -> viandaController.modificarHeladeraXQR(ctx));
 	
 	}
 
