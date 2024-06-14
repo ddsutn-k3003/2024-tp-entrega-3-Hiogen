@@ -36,7 +36,7 @@ public class PersistenceIT {
     @Test   
     public void testGuardarYRecuperarVianda() throws Exception {
     	Vianda vianda1 = new Vianda();
-        vianda1.setCodigoQR("abc"); //NO PUEDE SER EL MISMO
+        vianda1.setQr("abc");
         vianda1.setFechaElaboracion(LocalDateTime.now());
         vianda1.setEstado(EstadoViandaEnum.PREPARADA);
         vianda1.setColaboradorId(15L);

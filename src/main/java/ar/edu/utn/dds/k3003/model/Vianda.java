@@ -33,7 +33,7 @@ public class Vianda {
   @Column(name = "fechaElaboracion",nullable = false)
   private LocalDateTime fechaElaboracion;
 
-  protected Vianda() {
+  public Vianda() {
     super();
   }
 
@@ -50,4 +50,5 @@ public class Vianda {
     this.estado = estado;
     this.fechaElaboracion = fechaElaboracion;
   }
+
 }
