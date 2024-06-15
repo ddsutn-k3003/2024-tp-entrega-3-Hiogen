@@ -88,7 +88,7 @@ public class ViandaRepository {
     try {
       entityManager.createQuery("DELETE FROM Vianda")
           .executeUpdate();
-      entityManager.createNativeQuery("ALTER SEQUENCE vianda_id_seq RESTART WITH 1").executeUpdate();
+      entityManager.createNativeQuery("ALTER SEQUENCE vianda_id RESTART WITH 1").executeUpdate();
       entityManager.getTransaction()
           .commit();
     } catch (Exception e) {
