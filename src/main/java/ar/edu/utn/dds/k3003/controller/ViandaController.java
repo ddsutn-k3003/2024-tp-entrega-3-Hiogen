@@ -22,7 +22,7 @@ public class ViandaController {
   }
 
   public void obtenerXColIDAndAnioAndMes(Context context) {
-    var colaboradorId = context.queryParamAsClass("colaboradorId", Long.class)
+    var colaboradorId = context.queryParamAsClass("id", Long.class)
         .get();
     var anio = context.queryParamAsClass("anio", Integer.class)
         .get();
