@@ -21,7 +21,6 @@ Agregar una nueva vianda.
 **Example Value:**
 ```json
 {
-    "id": 0,
     "codigoQR": "asd",
     "fechaElaboracion": "2024-05-09T10:30:00Z",
     "estado": "PREPARADA",
