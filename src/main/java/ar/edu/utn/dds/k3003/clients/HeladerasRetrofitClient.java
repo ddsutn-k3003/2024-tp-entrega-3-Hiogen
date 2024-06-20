@@ -8,6 +8,6 @@ import retrofit2.http.Path;
 import java.util.List;
 
 public interface HeladerasRetrofitClient {
-    @GET("heladeras/{idHeladera}/temperaturas")
-    Call<List<TemperaturaDTO>> obtenerTemperaturas(@Path("idHeladera") Integer idHeladera);
+    @GET("heladeras/{heladeraId}/temperaturas")
+    Call<List<TemperaturaDTO>> obtenerTemperaturas(@Path("heladeraId") Integer heladeraId);
 }
