@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface HeladerasRetrofitClient {
     @GET("heladeras/{heladeraId}/temperaturas")
-    Call<List<TemperaturaDTO>> obtenerTemperaturas(@Path("heladeraId") Integer heladeraId);
+    Call<List<TemperaturaDTO>> get(@Path("heladeraId") Integer heladeraId);
 }
