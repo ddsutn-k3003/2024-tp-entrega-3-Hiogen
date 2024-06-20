@@ -56,14 +56,15 @@ public class HeladerasProxy implements FachadaHeladeras {
     }
 
     @Override
-    public List<TemperaturaDTO> obtenerTemperaturas(Integer idHeladera) {
-        Response<List<TemperaturaDTO>> response = null;
+    public List<TemperaturaDTO> obtenerTemperaturas(Integer heladeraId) {
         try {
-            response = service.obtenerTemperaturas(idHeladera).execute();
+            Response<List<TemperaturaDTO>> response = service.get(heladeraId).execute();
             if (response.isSuccessful()) {
                 return response.body();
             }
-            throw new RuntimeException("Error al obtener las temperaturas de la heladera: " + response.code());
+            if (execute.code() == HttpStatus.NOT_FOUND.getCode()) {
+                throw new NoSuchElementException("no se encontro la heladera " + heladeraId);
+            }
         } catch (Exception e) {
             throw new RuntimeException("Error al obtener las temperaturas de la heladera", e);
         }
